@@ -2034,8 +2034,10 @@ static int set_id_reg_non_ftr(struct kvm_vcpu *vcpu, const struct sys_reg_desc *
 	 * Since guest access to MIDR_EL1 is not trapped
 	 * set up VPIDR_EL2 to hold the MIDR_EL1 value.
 	 */
+#if 0
 	if (id == SYS_MIDR_EL1)
 		write_sysreg(val, vpidr_el2);
+#endif
 
 	mutex_unlock(&vcpu->kvm->arch.config_lock);
 	return 0;
