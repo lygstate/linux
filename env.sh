@@ -1,3 +1,5 @@
+export ARCH=arm64
+export CROSS_COMPILE=aarch64-linux-gnu-
 export PKGARCH=arm64
 export PKGOS=debian-12
 VERSION="$(make kernelversion)-${PKGARCH}-$(date -u +%Y%m%d%H%M)-$(echo ${PKGOS} | sed "s/-//g")"
