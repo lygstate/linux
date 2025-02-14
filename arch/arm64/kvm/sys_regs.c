@@ -2113,6 +2113,7 @@ static bool access_midr(struct kvm_vcpu *vcpu, struct sys_reg_params *p,
 {
 	if (p->is_write)
 		return write_to_read_only(vcpu, p, r);
+	pr_warn("kvm [%i]: access_midr\n", task_pid_nr(current));
 
 	p->regval = kvm_read_vm_id_reg(vcpu->kvm, SYS_MIDR_EL1);
 	return true;
@@ -3846,8 +3847,6 @@ static const struct sys_reg_desc cp14_64_regs[] = {
 static const struct sys_reg_desc cp15_regs[] = {
 	{ Op1( 0), CRn( 0), CRm( 0), Op2( 0), access_midr },
 	{ Op1( 0), CRn( 0), CRm( 0), Op2( 1), access_ctr },
-	{ Op1( 0), CRn( 0), CRm( 0), Op2( 4), access_midr },
-	{ Op1( 0), CRn( 0), CRm( 0), Op2( 7), access_midr },
 
 	{ Op1( 0), CRn( 1), CRm( 0), Op2( 0), access_vm_reg, NULL, SCTLR_EL1 },
 	/* ACTLR */
@@ -4342,7 +4341,7 @@ int kvm_handle_cp15_32(struct kvm_vcpu *vcpu)
 	struct sys_reg_params params;
 
 	params = esr_cp1x_32_to_params(kvm_vcpu_get_esr(vcpu));
-	pr_warn("kvm [%i]: Fetch Op0:%d Op1:%d CRn:%d CRm:%d Op2:%d\n", task_pid_nr(current),
+	pr_warn("kvm [%i]: Fetch cp15_32 Op1:%d CRn:%d CRm:%d Op2:%d\n", task_pid_nr(current),
 		params.Op1, params.CRn, params.CRm, params.Op2);
 
 	/*
