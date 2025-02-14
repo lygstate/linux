@@ -1,0 +1,9 @@
+-Wall
+-Iinclude
+-I.
+-Iarch/arm64/include
+-Iarch/arm64/include/asm
+-D__no_sanitize_or_inline=
+-D__no_kasan_or_inline=
+-D__KERNEL__
+-Itools/include/generated/
