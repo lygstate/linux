@@ -4318,6 +4318,8 @@ static int kvm_handle_cp_32(struct kvm_vcpu *vcpu,
 			    size_t nr_global)
 {
 	int Rt  = kvm_vcpu_sys_get_rt(vcpu);
+	pr_warn("kvm [%i]: kvm_handle_cp_32 Op0:%d Op1:%d CRn:%d CRm:%d Op2:%d\n", task_pid_nr(current),
+	params->Op0, params->Op1, params->CRn, params->CRm, params->Op2);
 
 	params->regval = vcpu_get_reg(vcpu, Rt);
 
