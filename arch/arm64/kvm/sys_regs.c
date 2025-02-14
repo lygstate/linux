@@ -4349,6 +4349,11 @@ int kvm_handle_cp15_32(struct kvm_vcpu *vcpu)
 	 * excluded from this scheme as they do not trivially map into AArch64
 	 * system register encodings.
 	 */
+	if (params.Op1 == 0 && params.CRn == 0 && params.Crm == 0 && params.opc2 == 0)
+	{
+		int Rt = kvm_vcpu_sys_get_rt(vcpu);
+		kvm_info("Fetch MIDR to %d\n", Rt);
+	}
 	if (params.Op1 == 0 && params.CRn == 0 && params.CRm)
 		return kvm_emulate_cp15_id_reg(vcpu, &params);
 
