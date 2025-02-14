@@ -2108,6 +2108,16 @@ static int set_wi_reg(struct kvm_vcpu *vcpu, const struct sys_reg_desc *rd,
 	return 0;
 }
 
+static bool access_midr(struct kvm_vcpu *vcpu, struct sys_reg_params *p,
+						const struct sys_reg_desc *r)
+{
+	if (p->is_write)
+		return write_to_read_only(vcpu, p, r);
+
+	p->regval = kvm_read_vm_id_reg(vcpu->kvm, SYS_MIDR_EL1);
+	return true;
+}
+
 static bool access_ctr(struct kvm_vcpu *vcpu, struct sys_reg_params *p,
 		       const struct sys_reg_desc *r)
 {
@@ -3834,7 +3844,11 @@ static const struct sys_reg_desc cp14_64_regs[] = {
  * register).
  */
 static const struct sys_reg_desc cp15_regs[] = {
+	{ Op1( 0), CRn( 0), CRm( 0), Op2( 0), access_midr },
 	{ Op1( 0), CRn( 0), CRm( 0), Op2( 1), access_ctr },
+	{ Op1( 0), CRn( 0), CRm( 0), Op2( 4), access_midr },
+	{ Op1( 0), CRn( 0), CRm( 0), Op2( 7), access_midr },
+
 	{ Op1( 0), CRn( 1), CRm( 0), Op2( 0), access_vm_reg, NULL, SCTLR_EL1 },
 	/* ACTLR */
 	{ AA32(LO), Op1( 0), CRn( 1), CRm( 0), Op2( 1), access_actlr, NULL, ACTLR_EL1 },
