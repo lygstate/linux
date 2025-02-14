@@ -4342,6 +4342,8 @@ int kvm_handle_cp15_32(struct kvm_vcpu *vcpu)
 	struct sys_reg_params params;
 
 	params = esr_cp1x_32_to_params(kvm_vcpu_get_esr(vcpu));
+	pr_warn("kvm [%i]: Fetch Op0:%d Op1:%d CRn:%d CRm:%d Op2:%d\n", task_pid_nr(current),
+		params.Op1, params.CRn, params.CRm, params.Op2);
 
 	/*
 	 * Certain AArch32 ID registers are handled by rerouting to the AArch64
